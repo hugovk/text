@@ -2,7 +2,6 @@ import logging
 import argparse
 
 import torch
-import io
 
 from torchtext.vocab import build_vocab_from_iterator
 from torchtext.data.utils import ngrams_iterator

@@ -1,6 +1,5 @@
 import torch
 import logging
-import io
 from torchtext.utils import download_from_url, extract_archive
 from torchtext.vocab import build_vocab_from_iterator
 from torchtext.data.utils import get_tokenizer
@@ -97,7 +96,7 @@ def _setup_datasets(dataset_name, tokenizer=get_tokenizer("basic_english"),
             raise TypeError("Must pass a vocab if train is not selected.")
         logging.info('Building Vocab based on {}'.format(_path['train']))
         txt_iter = iter(tokenizer(row) for row in open(_path['train'],
-                                                          encoding="utf8"))
+                                                       encoding="utf8"))
         vocab = build_vocab_from_iterator(txt_iter)
         logging.info('Vocab has {} entries'.format(len(vocab)))
     else:
@@ -109,7 +108,7 @@ def _setup_datasets(dataset_name, tokenizer=get_tokenizer("basic_english"),
         data[item] = []
         logging.info('Creating {} data'.format(item))
         txt_iter = iter(tokenizer(row) for row in open(_path[item],
-                                                          encoding="utf8"))
+                                                       encoding="utf8"))
         _iter = numericalize_tokens_from_iterator(
             vocab, txt_iter, removed_tokens)
         for tokens in _iter:

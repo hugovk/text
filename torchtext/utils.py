@@ -1,4 +1,3 @@
-import six
 import requests
 import csv
 from tqdm import tqdm

@@ -1,6 +1,5 @@
 import os
 import glob
-import io
 
 from .. import data
 

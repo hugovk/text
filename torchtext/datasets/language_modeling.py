@@ -1,5 +1,4 @@
 from torchtext import data
-import io
 
 
 class LanguageModelingDataset(data.Dataset):

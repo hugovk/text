@@ -1,4 +1,3 @@
-import six
 import json
 from functools import reduce
 

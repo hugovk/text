@@ -2,7 +2,6 @@ import logging
 import argparse
 
 import torch
-import io
 import time
 
 from torch.utils.data import DataLoader

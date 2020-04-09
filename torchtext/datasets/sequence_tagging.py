@@ -41,7 +41,7 @@ class SequenceTaggingDataset(data.Dataset):
             if columns:
                 examples.append(data.Example.fromlist(columns, fields))
         super().__init__(examples, fields,
-                                                     **kwargs)
+                         **kwargs)
 
 
 class UDPOS(SequenceTaggingDataset):

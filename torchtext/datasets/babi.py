@@ -123,7 +123,7 @@ class BABI20(Dataset):
         if test is None:
             test = 'qa' + str(task) + '_test.txt'
         return super().splits(path=path, root=root, text_field=text_field, train=train,
-                                 validation=validation, test=test, **kwargs)
+                              validation=validation, test=test, **kwargs)
 
     @classmethod
     def iters(cls, batch_size=32, root='.data', memory_size=50, task=1, joint=False,

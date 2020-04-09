@@ -1,4 +1,3 @@
-import six
 import torchtext.data as data
 
 from ..common.torchtext_test_case import TorchtextTestCase

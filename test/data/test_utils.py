@@ -1,9 +1,7 @@
-import six
 import torchtext.data as data
 import pytest
 from ..common.torchtext_test_case import TorchtextTestCase
 from torchtext.utils import unicode_csv_reader
-import io
 
 
 class TestUtils(TorchtextTestCase):

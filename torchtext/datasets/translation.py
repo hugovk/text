@@ -1,7 +1,6 @@
 import os
 import xml.etree.ElementTree as ET
 import glob
-import io
 import codecs
 
 from .. import data

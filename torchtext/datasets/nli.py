@@ -137,8 +137,8 @@ class SNLI(NLIDataset):
                train='snli_1.0_train.jsonl', validation='snli_1.0_dev.jsonl',
                test='snli_1.0_test.jsonl'):
         return super().splits(text_field, label_field, parse_field=parse_field,
-                                       root=root, train=train, validation=validation,
-                                       test=test)
+                              root=root, train=train, validation=validation,
+                              test=test)
 
 
 class MultiNLI(NLIDataset):
@@ -157,10 +157,10 @@ class MultiNLI(NLIDataset):
             extra_fields["genre"] = ("genre", genre_field)
 
         return super().splits(text_field, label_field,
-                                           parse_field=parse_field,
-                                           extra_fields=extra_fields,
-                                           root=root, train=train,
-                                           validation=validation, test=test)
+                              parse_field=parse_field,
+                              extra_fields=extra_fields,
+                              root=root, train=train,
+                              validation=validation, test=test)
 
 
 class XNLI(NLIDataset):
@@ -180,9 +180,9 @@ class XNLI(NLIDataset):
             extra_fields["language"] = ("language", language_field)
 
         return super().splits(text_field, label_field,
-                                       extra_fields=extra_fields,
-                                       root=root, train=None,
-                                       validation=validation, test=test)
+                              extra_fields=extra_fields,
+                              root=root, train=None,
+                              validation=validation, test=test)
 
     @classmethod
     def iters(cls, *args, **kwargs):

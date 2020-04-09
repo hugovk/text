@@ -1,6 +1,5 @@
 import logging
 import torch
-import io
 from torchtext.utils import download_from_url, extract_archive, unicode_csv_reader
 from os import path
 from torchtext.datasets.text_classification import URLS
