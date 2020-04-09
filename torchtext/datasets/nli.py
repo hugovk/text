@@ -5,7 +5,7 @@ class ShiftReduceField(data.Field):
 
     def __init__(self):
 
-        super(ShiftReduceField, self).__init__(preprocessing=lambda parse: [
+        super().__init__(preprocessing=lambda parse: [
             'reduce' if t == ')' else 'shift' for t in parse if t != '('])
 
         self.build_vocab([['reduce'], ['shift']])
@@ -20,13 +20,13 @@ class ParsedTextField(data.Field):
 
     def __init__(self, eos_token='<pad>', lower=False, reverse=False):
         if reverse:
-            super(ParsedTextField, self).__init__(
+            super().__init__(
                 eos_token=eos_token, lower=lower,
                 preprocessing=lambda parse: [t for t in parse if t not in ('(', ')')],
                 postprocessing=lambda parse, _: [list(reversed(p)) for p in parse],
                 include_lengths=True)
         else:
-            super(ParsedTextField, self).__init__(
+            super().__init__(
                 eos_token=eos_token, lower=lower,
                 preprocessing=lambda parse: [t for t in parse if t not in ('(', ')')],
                 include_lengths=True)
@@ -83,7 +83,7 @@ class NLIDataset(data.TabularDataset):
             if key not in fields.keys():
                 fields[key] = extra_fields[key]
 
-        return super(NLIDataset, cls).splits(
+        return super().splits(
             path, root, train, validation, test,
             format='json', fields=fields,
             filter_pred=lambda ex: ex.label != '-')
@@ -136,7 +136,7 @@ class SNLI(NLIDataset):
     def splits(cls, text_field, label_field, parse_field=None, root='.data',
                train='snli_1.0_train.jsonl', validation='snli_1.0_dev.jsonl',
                test='snli_1.0_test.jsonl'):
-        return super(SNLI, cls).splits(text_field, label_field, parse_field=parse_field,
+        return super().splits(text_field, label_field, parse_field=parse_field,
                                        root=root, train=train, validation=validation,
                                        test=test)
 
@@ -156,7 +156,7 @@ class MultiNLI(NLIDataset):
         if genre_field is not None:
             extra_fields["genre"] = ("genre", genre_field)
 
-        return super(MultiNLI, cls).splits(text_field, label_field,
+        return super().splits(text_field, label_field,
                                            parse_field=parse_field,
                                            extra_fields=extra_fields,
                                            root=root, train=train,
@@ -179,7 +179,7 @@ class XNLI(NLIDataset):
         if language_field is not None:
             extra_fields["language"] = ("language", language_field)
 
-        return super(XNLI, cls).splits(text_field, label_field,
+        return super().splits(text_field, label_field,
                                        extra_fields=extra_fields,
                                        root=root, train=None,
                                        validation=validation, test=test)

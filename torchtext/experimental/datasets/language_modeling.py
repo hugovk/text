@@ -47,7 +47,7 @@ class LanguageModelingDataset(torch.utils.data.Dataset):
 
         """
 
-        super(LanguageModelingDataset, self).__init__()
+        super().__init__()
         self.data = data
         self.vocab = vocab
 
@@ -58,8 +58,7 @@ class LanguageModelingDataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __iter__(self):
-        for x in self.data:
-            yield x
+        yield from self.data
 
     def get_vocab(self):
         return self.vocab
@@ -77,7 +76,7 @@ def _setup_datasets(dataset_name, tokenizer=get_tokenizer("basic_english"),
 
     if isinstance(data_select, str):
         data_select = [data_select]
-    if not set(data_select).issubset(set(('train', 'test', 'valid'))):
+    if not set(data_select).issubset({'train', 'test', 'valid'}):
         raise TypeError('data_select is not supported!')
 
     if dataset_name == 'PennTreebank':
@@ -97,7 +96,7 @@ def _setup_datasets(dataset_name, tokenizer=get_tokenizer("basic_english"),
         if 'train' not in _path.keys():
             raise TypeError("Must pass a vocab if train is not selected.")
         logging.info('Building Vocab based on {}'.format(_path['train']))
-        txt_iter = iter(tokenizer(row) for row in io.open(_path['train'],
+        txt_iter = iter(tokenizer(row) for row in open(_path['train'],
                                                           encoding="utf8"))
         vocab = build_vocab_from_iterator(txt_iter)
         logging.info('Vocab has {} entries'.format(len(vocab)))
@@ -109,7 +108,7 @@ def _setup_datasets(dataset_name, tokenizer=get_tokenizer("basic_english"),
     for item in _path.keys():
         data[item] = []
         logging.info('Creating {} data'.format(item))
-        txt_iter = iter(tokenizer(row) for row in io.open(_path[item],
+        txt_iter = iter(tokenizer(row) for row in open(_path[item],
                                                           encoding="utf8"))
         _iter = numericalize_tokens_from_iterator(
             vocab, txt_iter, removed_tokens)

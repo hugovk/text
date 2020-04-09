@@ -1,4 +1,3 @@
-# coding: utf8
 from collections import Counter, OrderedDict
 from itertools import chain
 import six
@@ -11,7 +10,7 @@ from .utils import get_tokenizer, dtype_to_attr, is_tokenizer_serializable
 from ..vocab import Vocab, SubwordVocab
 
 
-class RawField(object):
+class RawField:
     """ Defines a general datatype.
 
     Every dataset consists of one or more types of data. For instance, a text
@@ -208,13 +207,13 @@ class Field(RawField):
         first. If `sequential=True`, it will be tokenized. Then the input
         will be optionally lowercased and passed to the user-provided
         `preprocessing` Pipeline."""
-        if (six.PY2 and isinstance(x, six.string_types)
-                and not isinstance(x, six.text_type)):
-            x = Pipeline(lambda s: six.text_type(s, encoding='utf-8'))(x)
-        if self.sequential and isinstance(x, six.text_type):
+        if (six.PY2 and isinstance(x, str)
+                and not isinstance(x, str)):
+            x = Pipeline(lambda s: str(s, encoding='utf-8'))(x)
+        if self.sequential and isinstance(x, str):
             x = self.tokenize(x.rstrip('\n'))
         if self.lower:
-            x = Pipeline(six.text_type.lower)(x)
+            x = Pipeline(str.lower)(x)
         if self.sequential and self.use_vocab and self.stop_words is not None:
             x = [w for w in x if w not in self.stop_words]
         if self.preprocessing is not None:
@@ -351,7 +350,7 @@ class Field(RawField):
             # the data is sequential, since it's unclear how to coerce padding tokens
             # to a numeric type.
             if not self.sequential:
-                arr = [numericalization_func(x) if isinstance(x, six.string_types)
+                arr = [numericalization_func(x) if isinstance(x, str)
                        else x for x in arr]
             if self.postprocessing is not None:
                 arr = self.postprocessing(arr, None)
@@ -378,7 +377,7 @@ class ReversibleField(Field):
             kwargs['tokenize'] = 'revtok'
         if 'unk_token' not in kwargs:
             kwargs['unk_token'] = ' UNK '
-        super(ReversibleField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def reverse(self, batch):
         if self.use_revtok:
@@ -419,7 +418,7 @@ class SubwordField(ReversibleField):
         kwargs['tokenize'] = 'subword'
         if 'unk_token' not in kwargs:
             kwargs['unk_token'] = '�'
-        super(SubwordField, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def segment(self, *args):
         """Segment one or more datasets with this subword field.
@@ -503,7 +502,7 @@ class NestedField(Field):
 
         if nesting_field.sequential:
             pad_token = nesting_field.pad_token
-        super(NestedField, self).__init__(
+        super().__init__(
             use_vocab=use_vocab,
             init_token=init_token,
             eos_token=eos_token,
@@ -586,7 +585,7 @@ class NestedField(Field):
         """
         minibatch = list(minibatch)
         if not self.nesting_field.sequential:
-            return super(NestedField, self).pad(minibatch)
+            return super().pad(minibatch)
 
         # Save values of attributes to be monkeypatched
         old_pad_token = self.pad_token
@@ -610,7 +609,7 @@ class NestedField(Field):
         old_include_lengths = self.include_lengths
         self.include_lengths = True
         self.nesting_field.include_lengths = True
-        padded, sentence_lengths = super(NestedField, self).pad(minibatch)
+        padded, sentence_lengths = super().pad(minibatch)
         padded_with_lengths = [self.nesting_field.pad(ex) for ex in padded]
         word_lengths = []
         final_padded = []
@@ -682,7 +681,7 @@ class NestedField(Field):
             kwargs["vectors_cache"] = None
         # just build vocab and does not load vector
         self.nesting_field.build_vocab(*flattened, **kwargs)
-        super(NestedField, self).build_vocab()
+        super().build_vocab()
         self.vocab.extend(self.nesting_field.vocab)
         self.vocab.freqs = self.nesting_field.vocab.freqs.copy()
         if old_vectors is not None:
@@ -738,4 +737,4 @@ class LabelField(Field):
         kwargs['unk_token'] = None
         kwargs['is_target'] = True
 
-        super(LabelField, self).__init__(**kwargs)
+        super().__init__(**kwargs)

@@ -3,7 +3,7 @@ import json
 from functools import reduce
 
 
-class Example(object):
+class Example:
     """Defines a single training or test example.
 
     Stores each column of the example as an attribute.
@@ -75,7 +75,7 @@ class Example(object):
         ex = cls()
         for (name, field), val in zip(fields, data):
             if field is not None:
-                if isinstance(val, six.string_types):
+                if isinstance(val, str):
                     val = val.rstrip('\n')
                 # Handle field tuples
                 if isinstance(name, tuple):

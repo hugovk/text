@@ -217,14 +217,13 @@ def ngrams_iterator(token_list, ngrams):
     def _get_ngrams(n):
         return zip(*[token_list[i:] for i in range(n)])
 
-    for x in token_list:
-        yield x
+    yield from token_list
     for n in range(2, ngrams + 1):
         for x in _get_ngrams(n):
             yield ' '.join(x)
 
 
-class RandomShuffler(object):
+class RandomShuffler:
     """Use random functions while keeping track of the random state to make it
     reproducible and deterministic."""
 

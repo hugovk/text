@@ -64,7 +64,7 @@ def read_lines_from_iterator(data_path, offsets, begin_line, num_lines):
 
 
 def preprocess_raw_enwik9(input_filename, output_filename):
-    with open(input_filename, 'r') as f1:
+    with open(input_filename) as f1:
         with open(output_filename, 'w') as f2:
             while True:
                 line = f1.readline()
@@ -97,7 +97,7 @@ class EnWik9(torch.utils.data.Dataset):
             >>> vocab = enwik9.get_vocab()
         """
 
-        super(EnWik9, self).__init__()
+        super().__init__()
 
         processed_file = os.path.join(root, 'norm_enwik9')
         if not os.path.exists(processed_file):
@@ -127,8 +127,7 @@ class EnWik9(torch.utils.data.Dataset):
         return len(self._data)
 
     def __iter__(self):
-        for x in self._data:
-            yield x
+        yield from self._data
 
     def get_vocab(self):
         if self._vocab is None:

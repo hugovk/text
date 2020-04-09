@@ -19,14 +19,14 @@ class LanguageModelingDataset(data.Dataset):
         """
         fields = [('text', text_field)]
         text = []
-        with io.open(path, encoding=encoding) as f:
+        with open(path, encoding=encoding) as f:
             for line in f:
                 text += text_field.preprocess(line)
                 if newline_eos:
-                    text.append(u'<eos>')
+                    text.append('<eos>')
 
         examples = [data.Example.fromlist([text], fields)]
-        super(LanguageModelingDataset, self).__init__(
+        super().__init__(
             examples, fields, **kwargs)
 
 
@@ -55,7 +55,7 @@ class WikiText2(LanguageModelingDataset):
             test: The filename of the test data, or None to not load the test
                 set. Default: 'wiki.test.tokens'.
         """
-        return super(WikiText2, cls).splits(
+        return super().splits(
             root=root, train=train, validation=validation, test=test,
             text_field=text_field, **kwargs)
 
@@ -116,7 +116,7 @@ class WikiText103(LanguageModelingDataset):
             test: The filename of the test data, or None to not load the test
                 set. Default: 'wiki.test.tokens'.
         """
-        return super(WikiText103, cls).splits(
+        return super().splits(
             root=root, train=train, validation=validation, test=test,
             text_field=text_field, **kwargs)
 
@@ -183,7 +183,7 @@ class PennTreebank(LanguageModelingDataset):
             test: The filename of the test data, or None to not load the test
                 set. Default: 'ptb.test.txt'.
         """
-        return super(PennTreebank, cls).splits(
+        return super().splits(
             root=root, train=train, validation=validation, test=test,
             text_field=text_field, **kwargs)
 

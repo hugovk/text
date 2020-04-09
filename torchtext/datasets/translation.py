@@ -31,15 +31,15 @@ class TranslationDataset(data.Dataset):
         src_path, trg_path = tuple(os.path.expanduser(path + x) for x in exts)
 
         examples = []
-        with io.open(src_path, mode='r', encoding='utf-8') as src_file, \
-                io.open(trg_path, mode='r', encoding='utf-8') as trg_file:
+        with open(src_path, mode='r', encoding='utf-8') as src_file, \
+                open(trg_path, mode='r', encoding='utf-8') as trg_file:
             for src_line, trg_line in zip(src_file, trg_file):
                 src_line, trg_line = src_line.strip(), trg_line.strip()
                 if src_line != '' and trg_line != '':
                     examples.append(data.Example.fromlist(
                         [src_line, trg_line], fields))
 
-        super(TranslationDataset, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
     @classmethod
     def splits(cls, exts, fields, path=None, root='.data',
@@ -110,7 +110,7 @@ class Multi30k(TranslationDataset):
             path = kwargs['path']
             del kwargs['path']
 
-        return super(Multi30k, cls).splits(
+        return super().splits(
             exts, fields, path, root, train, validation, test, **kwargs)
 
 
@@ -177,7 +177,7 @@ class IWSLT(TranslationDataset):
             print(f_orig)
             f_txt = f_orig.replace('.tags', '')
             with codecs.open(f_txt, mode='w', encoding='utf-8') as fd_txt, \
-                    io.open(f_orig, mode='r', encoding='utf-8') as fd_orig:
+                    open(f_orig, mode='r', encoding='utf-8') as fd_orig:
                 for l in fd_orig:
                     if not any(tag in l for tag in xml_tags):
                         fd_txt.write(l.strip() + '\n')
@@ -227,5 +227,5 @@ class WMT14(TranslationDataset):
             path = kwargs['path']
             del kwargs['path']
 
-        return super(WMT14, cls).splits(
+        return super().splits(
             exts, fields, path, root, train, validation, test, **kwargs)

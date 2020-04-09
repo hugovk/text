@@ -145,8 +145,7 @@ class Dataset(torch.utils.data.Dataset):
             return 2**32
 
     def __iter__(self):
-        for x in self.examples:
-            yield x
+        yield from self.examples
 
     def __getattr__(self, attr):
         if attr in self.fields:
@@ -248,7 +247,7 @@ class TabularDataset(Dataset):
             'json': Example.fromJSON, 'dict': Example.fromdict,
             'tsv': Example.fromCSV, 'csv': Example.fromCSV}[format]
 
-        with io.open(os.path.expanduser(path), encoding="utf8") as f:
+        with open(os.path.expanduser(path), encoding="utf8") as f:
             if format == 'csv':
                 reader = unicode_csv_reader(f, **csv_reader_params)
             elif format == 'tsv':
@@ -278,7 +277,7 @@ class TabularDataset(Dataset):
                 else:
                     fields.append(field)
 
-        super(TabularDataset, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
 
 def check_split_ratio(split_ratio):
@@ -315,7 +314,7 @@ def stratify(examples, strata_field):
     # The field has to be hashable otherwise this doesn't work
     # There's two iterations over the whole dataset here, which can be
     # reduced to just one if a dedicated method for stratified splitting is used
-    unique_strata = set(getattr(example, strata_field) for example in examples)
+    unique_strata = {getattr(example, strata_field) for example in examples}
     strata_maps = {s: [] for s in unique_strata}
     for example in examples:
         strata_maps[getattr(example, strata_field)].append(example)

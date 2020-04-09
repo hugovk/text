@@ -12,7 +12,7 @@ from torchtext.utils import unicode_csv_reader
 
 def csv_iterator(data_path, ngrams):
     tokenizer = get_tokenizer("basic_english")
-    with io.open(data_path, encoding="utf8") as f:
+    with open(data_path, encoding="utf8") as f:
         reader = unicode_csv_reader(f)
         for row in reader:
             tokens = ' '.join(row[1:])

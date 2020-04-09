@@ -13,7 +13,7 @@ def _create_data_with_sp_transform(sp_generator, data_path):
 
     data = []
     labels = []
-    with io.open(data_path, encoding="utf8") as f:
+    with open(data_path, encoding="utf8") as f:
         reader = unicode_csv_reader(f)
         for row in reader:
             corpus = ' '.join(row[1:])

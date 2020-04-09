@@ -39,7 +39,7 @@ class TREC(data.Dataset):
             label, _, text = line.replace(b'\xf0', b' ').decode().partition(' ')
             examples.append(data.Example.fromlist([text, label], fields))
 
-        super(TREC, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
     @classmethod
     def splits(cls, text_field, label_field, root='.data',
@@ -56,7 +56,7 @@ class TREC(data.Dataset):
             Remaining keyword arguments: Passed to the splits method of
                 Dataset.
         """
-        return super(TREC, cls).splits(
+        return super().splits(
             root=root, text_field=text_field, label_field=label_field,
             train=train, validation=None, test=test, **kwargs)
 

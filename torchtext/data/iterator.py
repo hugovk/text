@@ -1,5 +1,3 @@
-from __future__ import division
-
 import math
 import random
 
@@ -12,7 +10,7 @@ from .dataset import Dataset
 logger = logging.getLogger(__name__)
 
 
-class Iterator(object):
+class Iterator:
     """Defines an iterator that loads batches of data from a Dataset.
 
     Attributes:
@@ -199,7 +197,7 @@ class BPTTIterator(Iterator):
 
     def __init__(self, dataset, batch_size, bptt_len, **kwargs):
         self.bptt_len = bptt_len
-        super(BPTTIterator, self).__init__(dataset, batch_size, **kwargs)
+        super().__init__(dataset, batch_size, **kwargs)
 
     def __len__(self):
         return math.ceil((len(self.dataset[0].text) / self.batch_size - 1)
@@ -286,8 +284,6 @@ def pool(data, batch_size, key, batch_size_fn=lambda new, count, sofar: count,
             if sort_within_batch \
             else batch(p, batch_size, batch_size_fn)
         if shuffle:
-            for b in random_shuffler(list(p_batch)):
-                yield b
+            yield from random_shuffler(list(p_batch))
         else:
-            for b in list(p_batch):
-                yield b
+            yield from list(p_batch)

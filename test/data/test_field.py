@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from collections import Counter
 import os
 
@@ -329,7 +327,7 @@ class TestField(TorchtextTestCase):
                                       test_example_data]
 
         postprocessed_numericalized = question_field.numericalize(
-            (test_example_data))
+            test_example_data)
         verify_numericalized_example(question_field,
                                      reversed_test_example_data,
                                      postprocessed_numericalized)
@@ -338,7 +336,7 @@ class TestField(TorchtextTestCase):
         # Based on request from #354
         self.write_test_ppid_dataset(data_format="tsv")
         question_field = data.Field(sequential=True, batch_first=True,
-                                    stop_words=set(["do", "you"]))
+                                    stop_words={"do", "you"})
         tsv_fields = [("id", None), ("q1", question_field),
                       ("q2", question_field), ("label", None)]
         tsv_dataset = data.TabularDataset(

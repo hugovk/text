@@ -1,5 +1,4 @@
 import os
-from io import open
 
 import torch
 
@@ -9,7 +8,7 @@ from ..data import Dataset, Field, Example, Iterator
 class BABI20Field(Field):
 
     def __init__(self, memory_size, **kwargs):
-        super(BABI20Field, self).__init__(**kwargs)
+        super().__init__(**kwargs)
         self.memory_size = memory_size
         self.unk_token = None
         self.batch_first = True
@@ -18,7 +17,7 @@ class BABI20Field(Field):
         if isinstance(x, list):
             return [super(BABI20Field, self).preprocess(s) for s in x]
         else:
-            return super(BABI20Field, self).preprocess(x)
+            return super().preprocess(x)
 
     def pad(self, minibatch):
         if isinstance(minibatch[0][0], list):
@@ -28,13 +27,13 @@ class BABI20Field(Field):
                 # sentences are indexed in reverse order and truncated to memory_size
                 nex = ex[::-1][:self.memory_size]
                 padded.append(
-                    super(BABI20Field, self).pad(nex)
+                    super().pad(nex)
                     + [[self.pad_token] * self.fix_length]
                     * (self.memory_size - len(nex)))
             self.fix_length = None
             return padded
         else:
-            return super(BABI20Field, self).pad(minibatch)
+            return super().pad(minibatch)
 
     def numericalize(self, arr, device=None):
         if isinstance(arr[0][0], list):
@@ -47,7 +46,7 @@ class BABI20Field(Field):
                 arr = arr.contiguous()
             return arr
         else:
-            return super(BABI20Field, self).numericalize(arr, device=device)
+            return super().numericalize(arr, device=device)
 
 
 class BABI20(Dataset):
@@ -59,11 +58,11 @@ class BABI20(Dataset):
         fields = [('story', text_field), ('query', text_field), ('answer', text_field)]
         self.sort_key = lambda x: len(x.query)
 
-        with open(path, 'r', encoding="utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             triplets = self._parse(f, only_supporting)
             examples = [Example.fromlist(triplet, fields) for triplet in triplets]
 
-        super(BABI20, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
     @staticmethod
     def _parse(file, only_supporting):
@@ -123,8 +122,7 @@ class BABI20(Dataset):
                 validation = 'qa' + str(task) + '_valid.txt'
         if test is None:
             test = 'qa' + str(task) + '_test.txt'
-        return super(BABI20,
-                     cls).splits(path=path, root=root, text_field=text_field, train=train,
+        return super().splits(path=path, root=root, text_field=text_field, train=train,
                                  validation=validation, test=test, **kwargs)
 
     @classmethod

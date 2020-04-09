@@ -30,11 +30,11 @@ class IMDB(data.Dataset):
 
         for label in ['pos', 'neg']:
             for fname in glob.iglob(os.path.join(path, label, '*.txt')):
-                with io.open(fname, 'r', encoding="utf-8") as f:
+                with open(fname, 'r', encoding="utf-8") as f:
                     text = f.readline()
                 examples.append(data.Example.fromlist([text, label], fields))
 
-        super(IMDB, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
     @classmethod
     def splits(cls, text_field, label_field, root='.data',
@@ -50,7 +50,7 @@ class IMDB(data.Dataset):
             Remaining keyword arguments: Passed to the splits method of
                 Dataset.
         """
-        return super(IMDB, cls).splits(
+        return super().splits(
             root=root, text_field=text_field, label_field=label_field,
             train=train, validation=None, test=test, **kwargs)
 

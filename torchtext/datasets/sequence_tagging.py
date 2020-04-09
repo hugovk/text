@@ -40,7 +40,7 @@ class SequenceTaggingDataset(data.Dataset):
 
             if columns:
                 examples.append(data.Example.fromlist(columns, fields))
-        super(SequenceTaggingDataset, self).__init__(examples, fields,
+        super().__init__(examples, fields,
                                                      **kwargs)
 
 
@@ -61,7 +61,7 @@ class UDPOS(SequenceTaggingDataset):
         data.
         """
 
-        return super(UDPOS, cls).splits(
+        return super().splits(
             fields=fields, root=root, train=train, validation=validation,
             test=test, **kwargs)
 
@@ -82,7 +82,7 @@ class CoNLL2000Chunking(SequenceTaggingDataset):
               10% of the train set as validation
         """
 
-        train, test = super(CoNLL2000Chunking, cls).splits(
+        train, test = super().splits(
             fields=fields, root=root, train=train,
             test=test, separator=' ', **kwargs)
 

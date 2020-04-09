@@ -148,7 +148,7 @@ def get_csv_iterator(data_path, ngrams, vocab, start=0, num_lines=None):
     """
     def iterator(start, num_lines):
         tokenizer = get_tokenizer("basic_english")
-        with io.open(data_path, encoding="utf8") as f:
+        with open(data_path, encoding="utf8") as f:
             reader = unicode_csv_reader(f)
             for i, row in enumerate(reader):
                 if i == start:
@@ -176,7 +176,7 @@ class Dataset(torch.utils.data.IterableDataset):
         num_lines: the number of lines read by the individual iterator.
     """
     def __init__(self, iterator, num_lines):
-        super(Dataset, self).__init__()
+        super().__init__()
         self._num_lines = num_lines
         self._iterator = iterator
         self._setup = False
@@ -210,15 +210,14 @@ class Dataset(torch.utils.data.IterableDataset):
         if self._setup is False:
             self._setup_iterator()
             self._setup = True
-        for x in self._iterator:
-            yield x
+        yield from self._iterator
 
 
 def count(data_path):
     r"""
     return the total numerber of text entries and labels.
     """
-    with io.open(data_path, encoding="utf8") as f:
+    with open(data_path, encoding="utf8") as f:
         reader = unicode_csv_reader(f)
         labels = [int(row[0]) for row in reader]
         num_lines = len(labels)

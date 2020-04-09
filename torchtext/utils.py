@@ -133,15 +133,7 @@ def unicode_csv_reader(unicode_csv_data, **kwargs):
             maxInt = int(maxInt / 10)
     csv.field_size_limit(maxInt)
 
-    if six.PY2:
-        # csv.py doesn't do Unicode; encode temporarily as UTF-8:
-        csv_reader = csv.reader(utf_8_encoder(unicode_csv_data), **kwargs)
-        for row in csv_reader:
-            # decode UTF-8 back to Unicode, cell by cell:
-            yield [cell.decode('utf-8') for cell in row]
-    else:
-        for line in csv.reader(unicode_csv_data, **kwargs):
-            yield line
+    yield from csv.reader(unicode_csv_data, **kwargs)
 
 
 def utf_8_encoder(unicode_csv_data):

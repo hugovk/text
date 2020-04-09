@@ -41,7 +41,7 @@ class SST(data.Dataset):
                             data.Example.fromtree(line, fields, True)]
             else:
                 examples = [data.Example.fromtree(line, fields) for line in f]
-        super(SST, self).__init__(examples, fields, **kwargs)
+        super().__init__(examples, fields, **kwargs)
 
     @classmethod
     def splits(cls, text_field, label_field, root='.data',

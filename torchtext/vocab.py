@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 from collections import defaultdict
 from functools import partial
 import logging
@@ -19,7 +18,7 @@ from collections import Counter
 logger = logging.getLogger(__name__)
 
 
-class Vocab(object):
+class Vocab:
     """Defines a vocabulary object that will be used to numericalize a field.
 
     Attributes:
@@ -170,8 +169,8 @@ class Vocab(object):
             vectors = [vectors]
         for idx, vector in enumerate(vectors):
             if six.PY2 and isinstance(vector, str):
-                vector = six.text_type(vector)
-            if isinstance(vector, six.string_types):
+                vector = str(vector)
+            if isinstance(vector, str):
                 # Convert the string pretrained vector identifier
                 # to a Vectors object
                 if vector not in pretrained_aliases:
@@ -294,7 +293,7 @@ def _infer_shape(f):
     return num_lines, vector_dim
 
 
-class Vectors(object):
+class Vectors:
 
     def __init__(self, name, cache=None,
                  url=None, unk_init=None, max_vectors=None):
@@ -406,7 +405,7 @@ class Vectors(object):
                                                                     dim))
 
                     try:
-                        if isinstance(word, six.binary_type):
+                        if isinstance(word, bytes):
                             word = word.decode('utf-8')
                     except UnicodeDecodeError:
                         logger.info("Skipping non-UTF8 token {}".format(repr(word)))
@@ -481,7 +480,7 @@ class GloVe(Vectors):
     def __init__(self, name='840B', dim=300, **kwargs):
         url = self.url[name]
         name = 'glove.{}.{}d.txt'.format(name, str(dim))
-        super(GloVe, self).__init__(name, url=url, **kwargs)
+        super().__init__(name, url=url, **kwargs)
 
 
 class FastText(Vectors):
@@ -491,7 +490,7 @@ class FastText(Vectors):
     def __init__(self, language="en", **kwargs):
         url = self.url_base.format(language)
         name = os.path.basename(url)
-        super(FastText, self).__init__(name, url=url, **kwargs)
+        super().__init__(name, url=url, **kwargs)
 
 
 class CharNGram(Vectors):
@@ -501,7 +500,7 @@ class CharNGram(Vectors):
            'jmt_pre-trained_embeddings.tar.gz')
 
     def __init__(self, **kwargs):
-        super(CharNGram, self).__init__(self.name, url=self.url, **kwargs)
+        super().__init__(self.name, url=self.url, **kwargs)
 
     def __getitem__(self, token):
         vector = torch.Tensor(1, self.dim).zero_()

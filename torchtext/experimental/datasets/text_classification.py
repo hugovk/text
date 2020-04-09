@@ -25,7 +25,7 @@ def _imdb_iterator(key, extracted_files, tokenizer, ngrams, yield_cls=False):
         if 'urls' in fname:
             continue
         elif key in fname and ('pos' in fname or 'neg' in fname):
-            with io.open(fname, encoding="utf8") as f:
+            with open(fname, encoding="utf8") as f:
                 label = 1 if 'pos' in fname else 0
                 if yield_cls:
                     yield label, ngrams_iterator(tokenizer(f.read()), ngrams)
@@ -37,7 +37,7 @@ def _generate_data_iterators(dataset_name, root, ngrams, tokenizer, data_select)
     if not tokenizer:
         tokenizer = get_tokenizer("basic_english")
 
-    if not set(data_select).issubset(set(('train', 'test'))):
+    if not set(data_select).issubset({'train', 'test'}):
         raise TypeError('Given data selection {} is not supported!'.format(data_select))
 
     dataset_tar = download_from_url(URLS[dataset_name], root=root)

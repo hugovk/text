@@ -30,7 +30,7 @@ URLS = {
 
 def _csv_iterator(data_path, ngrams, yield_cls=False):
     tokenizer = get_tokenizer("basic_english")
-    with io.open(data_path, encoding="utf8") as f:
+    with open(data_path, encoding="utf8") as f:
         reader = unicode_csv_reader(f)
         for row in reader:
             tokens = ' '.join(row[1:])
@@ -91,7 +91,7 @@ class TextClassificationDataset(torch.utils.data.Dataset):
 
         """
 
-        super(TextClassificationDataset, self).__init__()
+        super().__init__()
         self._data = data
         self._labels = labels
         self._vocab = vocab
@@ -103,8 +103,7 @@ class TextClassificationDataset(torch.utils.data.Dataset):
         return len(self._data)
 
     def __iter__(self):
-        for x in self._data:
-            yield x
+        yield from self._data
 
     def get_labels(self):
         return self._labels
