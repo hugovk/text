@@ -503,8 +503,6 @@ class CharNGram(Vectors):
         vector = torch.Tensor(1, self.dim).zero_()
         if token == "<unk>":
             return self.unk_init(vector)
-        # These literals need to be coerced to unicode for Python 2 compatibility
-        # when we try to join them with read ngrams from the files.
         chars = ['#BEGIN#'] + list(token) + ['#END#']
         num_vectors = 0
         for n in [2, 3, 4]:
