@@ -5,8 +5,7 @@ import os
 import zipfile
 import gzip
 
-import six
-from six.moves.urllib.request import urlretrieve
+from urllib.request import urlretrieve
 import torch
 from tqdm import tqdm
 import tarfile
@@ -168,8 +167,6 @@ class Vocab:
         if not isinstance(vectors, list):
             vectors = [vectors]
         for idx, vector in enumerate(vectors):
-            if six.PY2 and isinstance(vector, str):
-                vector = str(vector)
             if isinstance(vector, str):
                 # Convert the string pretrained vector identifier
                 # to a Vectors object

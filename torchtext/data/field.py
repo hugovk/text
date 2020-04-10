@@ -1,6 +1,5 @@
 from collections import Counter, OrderedDict
 from itertools import chain
-import six
 import torch
 from tqdm import tqdm
 
@@ -203,13 +202,9 @@ class Field(RawField):
     def preprocess(self, x):
         """Load a single example using this field, tokenizing if necessary.
 
-        If the input is a Python 2 `str`, it will be converted to Unicode
-        first. If `sequential=True`, it will be tokenized. Then the input
+        If `sequential=True`, the input will be tokenized. Then the input
         will be optionally lowercased and passed to the user-provided
         `preprocessing` Pipeline."""
-        if (six.PY2 and isinstance(x, str)
-                and not isinstance(x, str)):
-            x = Pipeline(lambda s: str(s, encoding='utf-8'))(x)
         if self.sequential and isinstance(x, str):
             x = self.tokenize(x.rstrip('\n'))
         if self.lower:
