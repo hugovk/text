@@ -1,7 +1,7 @@
 import torch
 
 
-class Batch:
+class Batch(object):
     """Defines a batch of examples along with its Fields.
 
     Attributes:

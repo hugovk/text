@@ -175,7 +175,7 @@ class Dataset(torch.utils.data.IterableDataset):
         num_lines: the number of lines read by the individual iterator.
     """
     def __init__(self, iterator, num_lines):
-        super().__init__()
+        super(Dataset, self).__init__()
         self._num_lines = num_lines
         self._iterator = iterator
         self._setup = False
